@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -17,6 +18,7 @@ interface ParkingLot {
 }
 
 const MapView = () => {
+  const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState('');
   
   // Mock parking lots data
@@ -137,7 +139,7 @@ const MapView = () => {
                   </div>
                   
                   <div className="text-right space-y-2">
-                    <Link to={`/booking/${lot.id}`}>
+                    <Link to={`/slot-selection/${lot.id}`}>
                       <Button size="sm" className="accent-glow">
                         Park Now
                       </Button>
@@ -151,7 +153,11 @@ const MapView = () => {
 
         {/* Bottom CTA */}
         <div className="fixed bottom-6 left-4 right-4">
-          <Button className="w-full btn-primary" size="lg">
+          <Button 
+            onClick={() => navigate('/map')}
+            className="w-full btn-primary" 
+            size="lg"
+          >
             <Car className="w-5 h-5 mr-2" />
             Find Best Spot
           </Button>
