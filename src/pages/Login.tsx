@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -7,6 +8,7 @@ import { Link } from 'react-router-dom';
 import parkingIcon from '@/assets/parking-icon.png';
 
 const Login = () => {
+  const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showOTP, setShowOTP] = useState(false);
@@ -20,6 +22,9 @@ const Login = () => {
   const handleLogin = () => {
     // Add login logic here
     console.log('Login attempt', { email, password, otp });
+    
+    // Navigate to map view after successful login
+    navigate('/map');
   };
 
   return (
