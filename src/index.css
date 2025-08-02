@@ -8,35 +8,61 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
-
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
-
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
-
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
-
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
-
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
-
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
-
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
-
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
-
-    --radius: 0.5rem;
+    /* Parking App Design System - Dark Theme */
+    --bg-primary: 225 47% 8%;  /* #0A0E1A Midnight Navy */
+    --bg-secondary: 225 30% 15%; /* Lighter navy for cards */
+    --bg-glass: 225 47% 8% / 0.7; /* Glass overlay */
+    
+    --accent: 83 85% 63%; /* #B7F34C Lime Green */
+    --accent-hover: 83 85% 55%; /* #A4E620 Hover state */
+    --accent-foreground: 225 47% 8%;
+    
+    --text-main: 0 0% 100%; /* #FFFFFF */
+    --text-muted: 0 0% 78%; /* #C7C7C7 */
+    --text-inactive: 225 25% 25%; /* #333A4D */
+    
+    --border: 0 0% 88%; /* #E0E0E0 */
+    --border-muted: 225 25% 25%;
+    
+    /* Semantic tokens mapped to new palette */
+    --background: var(--bg-primary);
+    --foreground: var(--text-main);
+    
+    --card: var(--bg-secondary);
+    --card-foreground: var(--text-main);
+    
+    --popover: var(--bg-secondary);
+    --popover-foreground: var(--text-main);
+    
+    --primary: var(--accent);
+    --primary-foreground: var(--accent-foreground);
+    
+    --secondary: var(--bg-secondary);
+    --secondary-foreground: var(--text-main);
+    
+    --muted: var(--bg-secondary);
+    --muted-foreground: var(--text-muted);
+    
+    --destructive: 0 84% 60%;
+    --destructive-foreground: var(--text-main);
+    
+    --input: var(--bg-secondary);
+    --ring: var(--accent);
+    
+    --radius: 0.75rem; /* 12px rounded corners */
+    
+    /* Glassmorphism gradients */
+    --gradient-glass: linear-gradient(135deg, hsl(var(--bg-glass)), hsl(var(--bg-secondary) / 0.8));
+    --gradient-accent: linear-gradient(135deg, hsl(var(--accent)), hsl(var(--accent-hover)));
+    
+    /* Shadow system */
+    --shadow-glow: 0 0 20px hsl(var(--accent) / 0.3);
+    --shadow-card: 0 8px 32px hsl(225 47% 4% / 0.4);
+    --shadow-elevated: 0 16px 64px hsl(225 47% 4% / 0.6);
+    
+    /* Transitions */
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-bounce: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
 
     --sidebar-background: 0 0% 98%;
 
@@ -100,6 +126,61 @@ All colors MUST be HSL.
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground font-inter;
+  }
+}
+
+@layer components {
+  /* Glassmorphism Card */
+  .glass-card {
+    @apply bg-card/70 backdrop-blur-md border border-border-muted/20 rounded-xl shadow-[var(--shadow-card)] transition-[var(--transition-smooth)];
+  }
+  
+  .glass-card:hover {
+    @apply shadow-[var(--shadow-elevated)] border-border-muted/40;
+  }
+  
+  /* Accent Glow Effect */
+  .accent-glow {
+    @apply shadow-[var(--shadow-glow)] transition-[var(--transition-smooth)];
+  }
+  
+  .accent-glow:hover {
+    @apply shadow-[0_0_32px_hsl(var(--accent)/0.5)];
+  }
+  
+  /* Button Variants */
+  .btn-primary {
+    @apply bg-primary text-primary-foreground font-semibold px-6 py-3 rounded-xl transition-[var(--transition-smooth)] accent-glow;
+  }
+  
+  .btn-primary:hover {
+    @apply bg-[hsl(var(--accent-hover))] transform scale-105;
+  }
+  
+  .btn-glass {
+    @apply glass-card text-foreground font-semibold px-6 py-3 hover:bg-card/90;
+  }
+  
+  /* Input Styling */
+  .input-glass {
+    @apply glass-card bg-input border-border-muted/30 text-foreground placeholder:text-muted-foreground px-4 py-3 focus:ring-2 focus:ring-primary focus:border-transparent;
+  }
+  
+  /* Typography Classes */
+  .title-large {
+    @apply text-2xl font-semibold tracking-tight;
+  }
+  
+  .title-medium {
+    @apply text-xl font-semibold;
+  }
+  
+  .body-large {
+    @apply text-base;
+  }
+  
+  .body-small {
+    @apply text-sm text-muted-foreground;
   }
 }
