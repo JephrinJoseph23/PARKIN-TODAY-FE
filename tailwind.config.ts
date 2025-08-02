@@ -22,6 +22,15 @@ export default {
 				inter: ['Inter', 'SF Pro Display', 'Roboto', 'sans-serif'],
 			},
 			colors: {
+				'bg-primary': 'hsl(var(--bg-primary))',
+				'bg-secondary': 'hsl(var(--bg-secondary))',
+				'bg-glass': 'hsl(var(--bg-glass))',
+				'accent-hover': 'hsl(var(--accent-hover))',
+				'text-main': 'hsl(var(--text-main))',
+				'text-muted': 'hsl(var(--text-muted))',
+				'text-inactive': 'hsl(var(--text-inactive))',
+				'border-muted': 'hsl(var(--border-muted))',
+				
 				border: 'hsl(var(--border))',
 				input: 'hsl(var(--input))',
 				ring: 'hsl(var(--ring))',
