@@ -1,8 +1,8 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { ArrowLeft, CreditCard, Wallet } from 'lucide-react';
+import { ArrowLeft, CreditCard, Wallet, Timer, AlertCircle } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
 const InitialPayment = () => {
@@ -10,6 +10,50 @@ const InitialPayment = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const [isProcessing, setIsProcessing] = useState(false);
+  const [showEntryTimer, setShowEntryTimer] = useState(false);
+  const [entryTimeLeft, setEntryTimeLeft] = useState(3600); // 1 hour in seconds
+  const [paymentCompleted, setPaymentCompleted] = useState(false);
+
+  // Entry timer effect
+  useEffect(() => {
+    if (!showEntryTimer || !paymentCompleted) return;
+
+    const timer = setInterval(() => {
+      setEntryTimeLeft((prev) => {
+        if (prev <= 1) {
+          // Time expired - booking cancelled
+          clearInterval(timer);
+          toast({
+            title: "Booking Cancelled",
+            description: "You didn't enter within one hour. Money won't be refunded.",
+            variant: "destructive"
+          });
+          setTimeout(() => navigate('/'), 3000);
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, [showEntryTimer, paymentCompleted, navigate, toast]);
+
+  const formatTime = (seconds: number) => {
+    const minutes = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+  };
+
+  const simulateVehicleEntry = () => {
+    toast({
+      title: "Verifying Entry",
+      description: "ANPR system detected your vehicle.",
+    });
+    
+    setTimeout(() => {
+      navigate(`/parking-session/${lotId}/${slotId}`);
+    }, 2000);
+  };
 
   const handlePayment = async (method: string) => {
     setIsProcessing(true);
@@ -17,16 +61,17 @@ const InitialPayment = () => {
     // Simulate payment processing
     setTimeout(() => {
       setIsProcessing(false);
+      setPaymentCompleted(true);
       
       // Show booking confirmation
       toast({
         title: "Booking Confirmed!",
-        description: "Your parking slot has been reserved.",
+        description: "Your parking slot has been reserved. You have 1 hour to enter.",
       });
       
-      // Navigate to timer page after a brief delay
+      // Start entry timer
       setTimeout(() => {
-        navigate(`/parking-session/${lotId}/${slotId}`);
+        setShowEntryTimer(true);
       }, 2000);
     }, 2000);
   };
@@ -126,6 +171,37 @@ const InitialPayment = () => {
           </div>
         </Button>
       </div>
+
+      {/* Entry Timer */}
+      {showEntryTimer && (
+        <Card className="mb-6 border-orange-200 bg-orange-50 dark:bg-orange-900/20">
+          <CardContent className="p-6">
+            <div className="flex items-center gap-3 mb-4">
+              <Timer className="w-6 h-6 text-orange-600" />
+              <h3 className="text-lg font-semibold text-orange-600">Entry Timer</h3>
+            </div>
+            <div className="text-center space-y-3">
+              <div className="text-3xl font-bold text-orange-600">
+                {formatTime(entryTimeLeft)}
+              </div>
+              <p className="text-sm text-muted-foreground">
+                Time remaining to enter the parking lot
+              </p>
+              <div className="flex items-center justify-center gap-2 text-sm text-orange-600">
+                <AlertCircle className="w-4 h-4" />
+                <span>Enter within 1 hour or booking will be cancelled</span>
+              </div>
+            </div>
+            <Button 
+              onClick={simulateVehicleEntry}
+              className="w-full mt-4"
+              size="lg"
+            >
+              Simulate Vehicle Entry
+            </Button>
+          </CardContent>
+        </Card>
+      )}
 
       {isProcessing && (
         <div className="fixed inset-0 bg-background/80 backdrop-blur-sm flex items-center justify-center">

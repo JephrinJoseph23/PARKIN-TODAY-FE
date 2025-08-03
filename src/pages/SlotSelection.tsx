@@ -9,13 +9,13 @@ const SlotSelection = () => {
   const navigate = useNavigate();
   const [selectedSlot, setSelectedSlot] = useState<string | null>(null);
   
-  // Mock slot data
-  const slots = Array.from({ length: 20 }, (_, i) => ({
+  // Fixed slot data - 15 total slots, 5 green (available), 10 red (occupied)
+  const slots = Array.from({ length: 15 }, (_, i) => ({
     id: `slot-${i + 1}`,
     number: `A${i + 1}`,
-    isAvailable: Math.random() > 0.3, // 70% available
-    isEntry: i % 10 === 0,
-    isExit: i % 10 === 9
+    isAvailable: i < 5, // First 5 slots are available (green), rest are occupied (red)
+    isEntry: i === 0,
+    isExit: i === 14
   }));
 
   const handleSlotSelect = (slotId: string) => {
@@ -68,19 +68,19 @@ const SlotSelection = () => {
       </div>
 
       {/* Slots Grid */}
-      <div className="grid grid-cols-4 gap-3 mb-8">
+      <div className="grid grid-cols-5 gap-3 mb-8">
         {slots.map((slot) => (
           <div
             key={slot.id}
             onClick={() => slot.isAvailable && handleSlotSelect(slot.id)}
             className={`
               aspect-square rounded-lg border-2 flex flex-col items-center justify-center
-              transition-all duration-200 cursor-pointer relative
+              transition-all duration-200 relative
               ${slot.isAvailable 
                 ? selectedSlot === slot.id 
-                  ? 'bg-blue-500 border-blue-600 text-white' 
-                  : 'bg-green-500 border-green-600 text-white hover:bg-green-600'
-                : 'bg-red-500 border-red-600 text-white cursor-not-allowed opacity-80'
+                  ? 'bg-blue-500 border-blue-600 text-white cursor-pointer' 
+                  : 'bg-green-500 border-green-600 text-white hover:bg-green-600 cursor-pointer'
+                : 'bg-red-500 border-red-600 text-white cursor-not-allowed'
               }
             `}
           >

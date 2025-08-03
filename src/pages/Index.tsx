@@ -2,26 +2,71 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Search, MapPin, Star } from 'lucide-react';
+import { Card, CardContent } from '@/components/ui/card';
+import { Search, MapPin, Star, Clock } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import parkingHero from '@/assets/parking-hero.jpg';
 import parkingIcon from '@/assets/parking-icon.png';
+
+interface ParkingLot {
+  id: string;
+  name: string;
+  distance: string;
+  availableSlots: number;
+  totalSlots: number;
+  pricePerHour: number;
+}
 
 const Index = () => {
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState('');
 
-  const handleSearch = () => {
-    if (searchQuery.trim()) {
-      navigate('/map', { state: { searchQuery } });
+  // Mock parking lots data
+  const parkingLots: ParkingLot[] = [
+    {
+      id: '1',
+      name: 'Marina Bay Parking',
+      distance: '200m',
+      availableSlots: 15,
+      totalSlots: 50,
+      pricePerHour: 30,
+    },
+    {
+      id: '2',
+      name: 'City Center Mall',
+      distance: '450m',
+      availableSlots: 8,
+      totalSlots: 75,
+      pricePerHour: 25,
+    },
+    {
+      id: '3',
+      name: 'Business District',
+      distance: '680m',
+      availableSlots: 22,
+      totalSlots: 100,
+      pricePerHour: 35,
+    },
+    {
+      id: '4',
+      name: 'Shopping Plaza',
+      distance: '1.2km',
+      availableSlots: 5,
+      totalSlots: 60,
+      pricePerHour: 20,
     }
+  ];
+
+  const getAvailabilityColor = (available: number, total: number) => {
+    const percentage = (available / total) * 100;
+    if (percentage > 50) return 'text-green-500';
+    if (percentage > 20) return 'text-yellow-500';
+    return 'text-red-500';
   };
 
-  const handleParkNow = () => {
-    navigate('/map');
-  };
-
-  const handleFindBestSpot = () => {
-    navigate('/map', { state: { findBestSpot: true } });
+  const handleSearch = () => {
+    // Search functionality can be implemented here
+    console.log('Searching for:', searchQuery);
   };
 
   return (
@@ -83,53 +128,62 @@ const Index = () => {
         </div>
       </div>
 
-      {/* Quick Actions */}
+      {/* Parking Lots Section */}
       <div className="p-6 space-y-6">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-4xl mx-auto">
-          <Button 
-            onClick={handleParkNow}
-            size="lg"
-            className="h-16 text-lg"
-          >
-            <MapPin className="w-6 h-6 mr-2" />
-            Park Now
-          </Button>
-          <Button 
-            onClick={handleFindBestSpot}
-            variant="glass"
-            size="lg"
-            className="h-16 text-lg"
-          >
-            <Star className="w-6 h-6 mr-2" />
-            Find Best Spot
-          </Button>
+        {/* Quick Stats */}
+        <div className="grid grid-cols-3 gap-4 max-w-4xl mx-auto">
+          <Card className="text-center p-4">
+            <div className="text-2xl font-bold text-primary mb-1">50+</div>
+            <div className="text-sm text-muted-foreground">Parking Lots</div>
+          </Card>
+          <Card className="text-center p-4">
+            <div className="text-2xl font-bold text-primary mb-1">3km</div>
+            <div className="text-sm text-muted-foreground">Search Radius</div>
+          </Card>
+          <Card className="text-center p-4">
+            <div className="text-2xl font-bold text-primary mb-1">₹25</div>
+            <div className="text-sm text-muted-foreground">Avg. Price/hr</div>
+          </Card>
         </div>
 
-        {/* Features */}
-        <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6 mt-12">
-          <div className="text-center space-y-3">
-            <div className="w-16 h-16 bg-primary/10 rounded-xl flex items-center justify-center mx-auto">
-              <Search className="w-8 h-8 text-primary" />
-            </div>
-            <h3 className="text-xl font-semibold">Smart Search</h3>
-            <p className="text-muted-foreground">Find available parking spots in real-time with our advanced search technology.</p>
-          </div>
+        {/* Parking Lots List */}
+        <div className="space-y-4 max-w-4xl mx-auto">
+          <h2 className="text-2xl font-bold">Available Parking</h2>
           
-          <div className="text-center space-y-3">
-            <div className="w-16 h-16 bg-primary/10 rounded-xl flex items-center justify-center mx-auto">
-              <MapPin className="w-8 h-8 text-primary" />
-            </div>
-            <h3 className="text-xl font-semibold">Live Availability</h3>
-            <p className="text-muted-foreground">See real-time parking availability and reserve your spot before you arrive.</p>
-          </div>
-          
-          <div className="text-center space-y-3">
-            <div className="w-16 h-16 bg-primary/10 rounded-xl flex items-center justify-center mx-auto">
-              <Star className="w-8 h-8 text-primary" />
-            </div>
-            <h3 className="text-xl font-semibold">Best Rates</h3>
-            <p className="text-muted-foreground">Compare prices and find the most affordable parking options in your area.</p>
-          </div>
+          {parkingLots.map((lot) => (
+            <Card key={lot.id} className="hover:scale-[1.02] transition-transform cursor-pointer">
+              <CardContent className="p-4">
+                <div className="flex items-center justify-between">
+                  <div className="flex-1">
+                    <div className="flex items-center gap-2 mb-2">
+                      <MapPin className="w-4 h-4 text-primary" />
+                      <h3 className="text-lg font-semibold">{lot.name}</h3>
+                    </div>
+                    
+                    <div className="flex items-center gap-4 text-sm">
+                      <span className="text-muted-foreground">{lot.distance} away</span>
+                      <span className={getAvailabilityColor(lot.availableSlots, lot.totalSlots)}>
+                        {lot.availableSlots}/{lot.totalSlots} slots
+                      </span>
+                    </div>
+                    
+                    <div className="flex items-center gap-1 mt-1">
+                      <Clock className="w-4 h-4 text-muted-foreground" />
+                      <span className="text-sm text-muted-foreground">₹{lot.pricePerHour}/hour</span>
+                    </div>
+                  </div>
+                  
+                  <div className="text-right space-y-2">
+                    <Link to={`/slot-selection/${lot.id}`}>
+                      <Button size="sm">
+                        Park Now
+                      </Button>
+                    </Link>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          ))}
         </div>
       </div>
     </div>
