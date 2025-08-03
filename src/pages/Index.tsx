@@ -65,8 +65,7 @@ const Index = () => {
   };
 
   const handleSearch = () => {
-    // Search functionality can be implemented here
-    console.log('Searching for:', searchQuery);
+    navigate('/search');
   };
 
   return (

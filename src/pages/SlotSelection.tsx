@@ -67,15 +67,16 @@ const SlotSelection = () => {
         </div>
       </div>
 
-      {/* Slots Grid */}
-      <div className="grid grid-cols-5 gap-3 mb-8">
-        {slots.map((slot) => (
+      {/* Slots Grid - Two columns with varying sizes */}
+      <div className="grid grid-cols-2 gap-4 mb-8">
+        {slots.map((slot, index) => (
           <div
             key={slot.id}
             onClick={() => slot.isAvailable && handleSlotSelect(slot.id)}
             className={`
-              aspect-square rounded-lg border-2 flex flex-col items-center justify-center
+              rounded-lg border-2 flex flex-col items-center justify-center
               transition-all duration-200 relative
+              ${index < 3 ? 'h-24' : index < 8 ? 'h-20' : 'h-16'} // Large to small sizes
               ${slot.isAvailable 
                 ? selectedSlot === slot.id 
                   ? 'bg-blue-500 border-blue-600 text-white cursor-pointer' 

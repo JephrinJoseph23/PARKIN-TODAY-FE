@@ -8,6 +8,7 @@ import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import VehicleDetails from "./pages/VehicleDetails";
 import MapView from "./pages/MapView";
+import Search from "./pages/Search";
 import SlotSelection from "./pages/SlotSelection";
 import InitialPayment from "./pages/InitialPayment";
 import ParkingSession from "./pages/ParkingSession";
@@ -28,6 +29,7 @@ const App = () => (
           <Route path="/signup" element={<Signup />} />
           <Route path="/vehicle-details" element={<VehicleDetails />} />
           <Route path="/map" element={<MapView />} />
+          <Route path="/search" element={<Search />} />
           <Route path="/slot-selection/:lotId" element={<SlotSelection />} />
           <Route path="/initial-payment/:lotId/:slotId" element={<InitialPayment />} />
           <Route path="/parking-session/:lotId/:slotId" element={<ParkingSession />} />
