@@ -3,28 +3,36 @@ import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Mail, Lock, Car } from 'lucide-react';
+import { Mail, Lock, User, ArrowLeft } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import parkingIcon from '@/assets/parking-icon.png';
 
-const Login = () => {
+const Signup = () => {
   const navigate = useNavigate();
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    password: '',
+    confirmPassword: ''
+  });
   const [showOTP, setShowOTP] = useState(false);
   const [otp, setOtp] = useState('');
+
+  const handleInputChange = (field: string, value: string) => {
+    setFormData(prev => ({ ...prev, [field]: value }));
+  };
 
   const handleSendOTP = () => {
     setShowOTP(true);
     // Add OTP logic here
   };
 
-  const handleLogin = () => {
-    // Add login logic here
-    console.log('Login attempt', { email, password, otp });
+  const handleSignup = () => {
+    // Add signup logic here
+    console.log('Signup attempt', { ...formData, otp });
     
-    // Navigate to home page after successful login
-    navigate('/');
+    // Navigate to vehicle details after successful signup
+    navigate('/vehicle-details');
   };
 
   return (
@@ -33,21 +41,36 @@ const Login = () => {
         {/* Logo */}
         <div className="text-center">
           <div className="inline-flex items-center justify-center w-16 h-16 rounded-xl bg-primary/10 mb-4">
-            <img src={parkingIcon} alt="ParkSmart" className="w-8 h-8" />
+            <img src={parkingIcon} alt="Parkin Today" className="w-8 h-8" />
           </div>
           <h1 className="text-3xl font-bold text-foreground mb-2">Parkin Today</h1>
           <p className="body-small">Smart parking made simple</p>
         </div>
 
-        {/* Login Form */}
+        {/* Signup Form */}
         <Card className="p-6">
           <CardHeader className="text-center pb-4">
-            <CardTitle>Welcome Back</CardTitle>
+            <CardTitle>Create Account</CardTitle>
           </CardHeader>
           
           <CardContent className="space-y-4">
             {!showOTP ? (
               <>
+                {/* Name Input */}
+                <div className="space-y-2">
+                  <label className="body-small font-medium">Full Name</label>
+                  <div className="relative">
+                    <User className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+                    <Input
+                      type="text"
+                      placeholder="Enter your full name"
+                      value={formData.name}
+                      onChange={(e) => handleInputChange('name', e.target.value)}
+                      className="pl-10"
+                    />
+                  </div>
+                </div>
+
                 {/* Email Input */}
                 <div className="space-y-2">
                   <label className="body-small font-medium">Email</label>
@@ -56,8 +79,8 @@ const Login = () => {
                     <Input
                       type="email"
                       placeholder="Enter your email"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
+                      value={formData.email}
+                      onChange={(e) => handleInputChange('email', e.target.value)}
                       className="pl-10"
                     />
                   </div>
@@ -71,8 +94,23 @@ const Login = () => {
                     <Input
                       type="password"
                       placeholder="Enter your password"
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
+                      value={formData.password}
+                      onChange={(e) => handleInputChange('password', e.target.value)}
+                      className="pl-10"
+                    />
+                  </div>
+                </div>
+
+                {/* Confirm Password Input */}
+                <div className="space-y-2">
+                  <label className="body-small font-medium">Confirm Password</label>
+                  <div className="relative">
+                    <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+                    <Input
+                      type="password"
+                      placeholder="Confirm your password"
+                      value={formData.confirmPassword}
+                      onChange={(e) => handleInputChange('confirmPassword', e.target.value)}
                       className="pl-10"
                     />
                   </div>
@@ -82,7 +120,7 @@ const Login = () => {
                 <Button 
                   onClick={handleSendOTP} 
                   className="w-full"
-                  disabled={!email || !password}
+                  disabled={!formData.name || !formData.email || !formData.password || !formData.confirmPassword}
                 >
                   Send OTP
                 </Button>
@@ -101,17 +139,17 @@ const Login = () => {
                     className="text-center text-lg tracking-widest"
                   />
                   <p className="body-small text-center">
-                    OTP sent to {email}
+                    OTP sent to {formData.email}
                   </p>
                 </div>
 
-                {/* Login Button */}
+                {/* Create Account Button */}
                 <Button 
-                  onClick={handleLogin} 
+                  onClick={handleSignup} 
                   className="w-full"
                   disabled={otp.length !== 6}
                 >
-                  Login
+                  Create Account
                 </Button>
 
                 {/* Back Button */}
@@ -125,12 +163,12 @@ const Login = () => {
               </>
             )}
 
-            {/* Sign Up Link */}
+            {/* Login Link */}
             <div className="text-center pt-4">
               <p className="body-small">
-                Don't have an account?{' '}
-                <Link to="/signup" className="text-primary hover:text-accent-hover font-medium">
-                  Sign up
+                Already have an account?{' '}
+                <Link to="/login" className="text-primary hover:text-accent-hover font-medium">
+                  Sign in
                 </Link>
               </p>
             </div>
@@ -141,4 +179,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Signup;

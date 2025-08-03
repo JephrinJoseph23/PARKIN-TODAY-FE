@@ -54,7 +54,7 @@ const SlotSelection = () => {
       {/* Legend */}
       <div className="flex gap-4 mb-6 text-sm">
         <div className="flex items-center gap-2">
-          <div className="w-4 h-4 bg-primary rounded"></div>
+          <div className="w-4 h-4 bg-green-500 rounded"></div>
           <span>Available</span>
         </div>
         <div className="flex items-center gap-2">
@@ -78,9 +78,9 @@ const SlotSelection = () => {
               transition-all duration-200 cursor-pointer relative
               ${slot.isAvailable 
                 ? selectedSlot === slot.id 
-                  ? 'bg-blue-500 border-blue-400' 
-                  : 'bg-primary/20 border-primary hover:bg-primary/30'
-                : 'bg-red-500/20 border-red-400 cursor-not-allowed opacity-60'
+                  ? 'bg-blue-500 border-blue-600 text-white' 
+                  : 'bg-green-500 border-green-600 text-white hover:bg-green-600'
+                : 'bg-red-500 border-red-600 text-white cursor-not-allowed opacity-80'
               }
             `}
           >
