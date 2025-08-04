@@ -78,9 +78,14 @@ const Index = () => {
           </div>
           <h1 className="text-2xl font-bold">Parkin Today</h1>
         </div>
-        <Button variant="glass" size="sm" onClick={() => navigate('/login')}>
-          Profile
-        </Button>
+        <div className="flex items-center gap-2">
+          <Button variant="ghost" size="sm" onClick={() => navigate('/booking-history')}>
+            History
+          </Button>
+          <Button variant="glass" size="sm" onClick={() => navigate('/login')}>
+            Profile
+          </Button>
+        </div>
       </header>
 
       {/* Hero Section with Search */}

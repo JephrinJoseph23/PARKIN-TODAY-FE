@@ -49,11 +49,27 @@ const SearchPage = () => {
     }
   ];
 
+  // Mock search results
+  const searchResults = searchQuery ? [
+    {
+      id: 'search-1',
+      name: `${searchQuery} Parking Center`,
+      address: `${searchQuery} Area, Singapore`,
+      lastVisited: 'Search Result',
+      rating: 4.3
+    },
+    {
+      id: 'search-2', 
+      name: `${searchQuery} Mall Parking`,
+      address: `Near ${searchQuery}, Singapore`,
+      lastVisited: 'Search Result',
+      rating: 4.1
+    }
+  ] : [];
+
   const handleSearch = () => {
-    // Implement search functionality
+    // Search results will be shown below
     console.log('Searching for:', searchQuery);
-    // Navigate back to home with search results
-    navigate('/', { state: { searchQuery } });
   };
 
   return (
@@ -89,6 +105,48 @@ const SearchPage = () => {
           </Button>
         </div>
       </div>
+
+      {/* Search Results */}
+      {searchResults.length > 0 && (
+        <div className="space-y-4 mb-8">
+          <h2 className="text-xl font-semibold">Search Results</h2>
+          
+          {searchResults.map((place) => (
+            <Card key={place.id} className="hover:scale-[1.02] transition-transform cursor-pointer">
+              <CardContent className="p-4">
+                <div className="flex items-center justify-between">
+                  <div className="flex-1">
+                    <div className="flex items-center gap-2 mb-1">
+                      <MapPin className="w-4 h-4 text-primary" />
+                      <h3 className="font-semibold">{place.name}</h3>
+                    </div>
+                    
+                    <p className="text-sm text-muted-foreground mb-2">{place.address}</p>
+                    
+                    <div className="flex items-center gap-4 text-sm">
+                      <div className="flex items-center gap-1">
+                        <span className="text-muted-foreground">{place.lastVisited}</span>
+                      </div>
+                      <div className="flex items-center gap-1">
+                        <Star className="w-4 h-4 text-yellow-500 fill-current" />
+                        <span>{place.rating}</span>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <Button 
+                    variant="outline" 
+                    size="sm"
+                    onClick={() => navigate(`/slot-selection/${place.id}`)}
+                  >
+                    Select
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      )}
 
       {/* Recent Places */}
       <div className="space-y-4">

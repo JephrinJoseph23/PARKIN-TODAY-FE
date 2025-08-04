@@ -13,6 +13,7 @@ const InitialPayment = () => {
   const [showEntryTimer, setShowEntryTimer] = useState(false);
   const [entryTimeLeft, setEntryTimeLeft] = useState(3600); // 1 hour in seconds
   const [paymentCompleted, setPaymentCompleted] = useState(false);
+  const [bookingCancelled, setBookingCancelled] = useState(false);
 
   // Entry timer effect
   useEffect(() => {
@@ -74,6 +75,26 @@ const InitialPayment = () => {
         setShowEntryTimer(true);
       }, 2000);
     }, 2000);
+  };
+
+  const cancelBooking = () => {
+    setBookingCancelled(true);
+    toast({
+      title: "Booking Successfully Cancelled",
+      description: "Your money will be refunded within 3-5 business days.",
+      variant: "default"
+    });
+    setTimeout(() => navigate('/'), 3000);
+  };
+
+  const simulateTimeExpiry = () => {
+    setEntryTimeLeft(0);
+    toast({
+      title: "Booking Cancelled", 
+      description: "You didn't enter within one hour. Payment will not be refunded.",
+      variant: "destructive"
+    });
+    setTimeout(() => navigate('/'), 3000);
   };
 
   return (
@@ -192,13 +213,31 @@ const InitialPayment = () => {
                 <span>Enter within 1 hour or booking will be cancelled</span>
               </div>
             </div>
-            <Button 
-              onClick={simulateVehicleEntry}
-              className="w-full mt-4"
-              size="lg"
-            >
-              Simulate Vehicle Entry
-            </Button>
+            <div className="space-y-3 mt-4">
+              <Button 
+                onClick={simulateVehicleEntry}
+                className="w-full"
+                size="lg"
+              >
+                Simulate Vehicle Entry
+              </Button>
+              <Button 
+                onClick={cancelBooking}
+                variant="destructive"
+                className="w-full"
+                size="lg"
+              >
+                Cancel Booking
+              </Button>
+              <Button 
+                onClick={simulateTimeExpiry}
+                variant="outline"
+                className="w-full"
+                size="sm"
+              >
+                Demo: Time Expired
+              </Button>
+            </div>
           </CardContent>
         </Card>
       )}

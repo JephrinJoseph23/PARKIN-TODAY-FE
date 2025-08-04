@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Car } from 'lucide-react';
+import { Car, ArrowLeft } from 'lucide-react';
 import parkingIcon from '@/assets/parking-icon.png';
 
 const VehicleDetails = () => {
@@ -23,10 +23,18 @@ const VehicleDetails = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-background via-background to-bg-secondary">
-      <div className="w-full max-w-md space-y-6">
-        {/* Logo */}
-        <div className="text-center">
+    <div className="min-h-screen bg-gradient-to-br from-background via-background to-bg-secondary p-4">
+      {/* Back Button */}
+      <div className="mb-4">
+        <Button variant="ghost" size="icon" onClick={() => navigate(-1)}>
+          <ArrowLeft className="w-5 h-5" />
+        </Button>
+      </div>
+      
+      <div className="flex items-center justify-center min-h-[calc(100vh-80px)]">
+        <div className="w-full max-w-md space-y-6">
+          {/* Logo */}
+          <div className="text-center">
           <div className="inline-flex items-center justify-center w-16 h-16 rounded-xl bg-primary/10 mb-4">
             <img src={parkingIcon} alt="Parkin Today" className="w-8 h-8" />
           </div>
@@ -89,6 +97,7 @@ const VehicleDetails = () => {
             </p>
           </CardContent>
         </Card>
+        </div>
       </div>
     </div>
   );

@@ -34,7 +34,7 @@ const Billing = () => {
       });
       
       setTimeout(() => {
-        navigate('/map');
+        navigate('/booking-history');
       }, 3000);
       return;
     }
@@ -52,7 +52,7 @@ const Billing = () => {
       });
       
       setTimeout(() => {
-        navigate('/map');
+        navigate('/booking-history');
       }, 3000);
     }, 2000);
   };
